@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }}' watch list</title>
+</head>
+<body >
+    <div style="width:500px;border:1px solid black;margin:0 auto;">
+        <h2>{{ name }}'s novel reading list</h2>
+    {# using length filter to get the length of novel variable' length #}
+        <p>{{ novels|length}} Titles</p>
+        <ul>
+            {% for novel in novels%} {# iterate the variable of novels #}
+            <li>{{ novel.title }} - {{ novel.year }}</li> {# 等同于 novel['title'] #}
+            {% endfor %} {# use endfor to end for loog #}
+        </ul>
+        <footer>
+            <small>this webpage is developed by HQl using flask framework</small>
+        </footer>
+    </div>
+
+</body>
+</html>
