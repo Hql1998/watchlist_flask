@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ name }}' watch list</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" type="text/css">
 </head>
 <body >
-    <div style="width:500px;border:1px solid black;margin:0 auto;">
-        <h2>{{ name }}'s novel reading list</h2>
+    <div> <!-- style="width:500px;border:1px solid black;margin:0 auto;" -->
+        <h2><img src="{{ url_for('static', filename='image/white_gray.jpg') }}" class="totoro">{{ name }}'s novel reading list</h2>
     {# using length filter to get the length of novel variable' length #}
         <p>{{ novels|length}} Titles</p>
-        <ul>
+        <ul class="movie-list">
             {% for novel in novels%} {# iterate the variable of novels #}
             <li>{{ novel.title }} - {{ novel.year }}</li> {# 等同于 novel['title'] #}
             {% endfor %} {# use endfor to end for loog #}
         </ul>
+        <img src="{{ url_for('static', filename='image/green.jpg') }}" class="avatar" style="display:block;width:250px;margin:0 auto;">
         <footer>
             <small>this webpage is developed by HQl using flask framework</small>
         </footer>
+
     </div>
 
 </body>
