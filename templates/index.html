@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ name }}' watch list</title>
+    <title>{{ user.name }}' watch list</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" type="text/css">
 </head>
 <body >
     <div> <!-- style="width:500px;border:1px solid black;margin:0 auto;" -->
-        <h2><img src="{{ url_for('static', filename='image/white_gray.jpg') }}" class="totoro">{{ name }}'s novel reading list</h2>
+        <h2><img src="{{ url_for('static', filename='image/white_gray.jpg') }}" class="totoro">{{ user.name }}'s novel reading list</h2>
     {# using length filter to get the length of novel variable' length #}
         <p>{{ novels|length}} Titles</p>
         <ul class="movie-list">
