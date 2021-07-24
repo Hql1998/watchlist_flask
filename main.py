@@ -116,13 +116,20 @@ def forge():
     click.echo("database forged")
 
 
+@app.context_processor
+def inject_global():
+    user = User.query.first()
+    return dict(user=user)
+
+@app.errorhandler(404)
+def handle_404(e):
+    return render_template("404.html")
+
 @app.route("/")
 @app.route("/home")
-def hello():
-    user = User.query.first()
+def index():
     novels = Novel.query.all()
-    print(user.name)
-    rendered_text = render_template("index.html", user=user, novels=novels)
+    rendered_text = render_template("index.html", novels=novels)
     return rendered_text
 
 @app.route("/user/<name>")

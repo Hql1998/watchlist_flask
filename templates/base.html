@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.name }}'s Watchlist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="icon" href="{{ url_for('static', filename='/image/icon.png') }}">
+  {% endblock %}
+</head>
+<body>
+  <h2>
+    <img src="{{ url_for('static', filename='image/white_gray.jpg') }}" class="avatar">
+    {{ user.name }}'s novel reading list
+  </h2>
+  <nav>
+      <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+      </ul>
+  </nav>
+  {% block content %} {% endblock %}
+  <footer>
+      <small>&copy; 2021 powered by <a href="http://helloflask.com/tutorial">flask</a></small>
+  </footer>
+</body>
+</html>
