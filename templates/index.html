@@ -2,10 +2,21 @@
 
 {% block content %}
 <p>{{ novels|length }} Titles</p>
+<form method="post">
+    <label for="name">Name</label>
+    <input id="name" type="text" name="name" autocomplete="off" required>
+    <label for="year">Year</label>
+    <input id="year" type="text" name="year" autocomplete="off" required>
+    <input type="submit" name="submit" value="Add" class="btn">
+</form>
 <ul class="movie-list">
     {% for novel in novels %}
     <li>{{ novel.title }} - {{ novel.year }}
         <span class="float-right">
+            <a class="btn" href="{{ url_for('edit', novel_id=novel.id) }}">Edit</a>
+            <form method="post" class="inline-form" action="{{ url_for('delete', novel_id=novel.id) }}">
+                <input name="delete" class="btn" type="submit" value="Delete" onclick="return confirm('are you sure?')">
+            </form>
             <a class="imdb" href="https://www.imdb.com/find?q={{ novel.title }}" target="_blank" title="Find this movie on IMDb">IMDb</a>
         </span>
     </li>

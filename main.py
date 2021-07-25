@@ -1,12 +1,11 @@
 from flask import Flask
-from flask import url_for, render_template
+from flask import url_for, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 import os, sys, click
 
 
 app = Flask(__name__)
-
-
+app.config['SECRET_KEY'] = 'dev'  # 等同于 app.secret_key = 'dev'
 # initialize database instance
 Win = sys.platform.startswith("win")
 if Win:
@@ -122,15 +121,54 @@ def inject_global():
     return dict(user=user)
 
 @app.errorhandler(404)
+@app.errorhandler(405)
 def handle_404(e):
     return render_template("404.html")
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 @app.route("/home")
 def index():
+    if request.method == 'POST':
+        title = request.form.get('name')
+        year = request.form.get('year')
+        if not title or not year or len(year) >4 or len(title) >60:
+            flash('invalid input')
+            return redirect(url_for('index'))
+        novel = Novel(title=title, year=year)
+        db.session.add(novel)
+        db.session.commit()
+        flash("item added!")
+        return redirect(url_for('index'))
     novels = Novel.query.all()
     rendered_text = render_template("index.html", novels=novels)
     return rendered_text
+
+@app.route('/edit_novel/id_<int:novel_id>', methods=['GET', 'POST'])
+def edit(novel_id):
+    novel = Novel.query.get_or_404(novel_id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        year = request.form['year']
+
+        if not title or not year or len(title) > 60 or len(year) > 4:
+            flash("Invalid input.")
+            return redirect(url_for('edit', novel_id=novel_id))
+        novel.title = title
+        novel.year = year
+        db.session.commit()
+        flash("Item updated")
+        return redirect(url_for("index"))
+    return render_template('edit.html', novel=novel)
+
+@app.route('/delete_novel/id_<int:novel_id>', methods=['POST'])
+def delete(novel_id):
+    print(novel_id)
+    novel = Novel.query.get_or_404(novel_id)
+    db.session.delete(novel)
+    db.session.commit()
+    flash("Item deleted")
+    return redirect(url_for("index"))
 
 @app.route("/user/<name>")
 def new_doc(name):
