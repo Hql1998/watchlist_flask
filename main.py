@@ -126,7 +126,7 @@ def forge():
         {'title': 'WALL-E', 'year': '2008'},
         {'title': 'The Pork of Music', 'year': '2012'},
     ]
-    user = User(name=name)
+    user = User(name=name, username=name)
     db.session.add(user)
 
     for n in novels:
@@ -163,7 +163,7 @@ def login():
         if not username or not password:
             flash("invalid input.")
             return redirect(url_for("login"))
-        if username == user.name and user.validate_password(password):
+        if username == user.username and user.validate_password(password):
             login_user(user)
             flash("Login success.")
             return redirect(url_for("index"))
@@ -186,7 +186,7 @@ def logout():
 @app.route("/home")
 def index():
     if request.method == 'POST':
-        if not current_user.isauthenticated:
+        if not current_user.is_authenticated:
             flash("unauthenticated user!")
             return redirect(url_for("index"))
         title = request.form.get('name')
